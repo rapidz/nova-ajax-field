@@ -16,6 +16,9 @@
 
 	// If you are using integers or floats for the values ensure to chain on the type methods...
 	AjaxField::make('Foo')->setUrl('/api/ajaxselect/foo')->typeInt(),
+	
+	// If you require a multiselect field you can chain on the multiple method
+	AjaxField::make('Foo')->setUrl('/api/ajaxselect/foo')->multiple(),
 ```
 
 The field expects the response from the AJAX call to respond with a JSON array of options in the following format:
