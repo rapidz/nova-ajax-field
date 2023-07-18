@@ -119,4 +119,16 @@ class AjaxField extends Field
 			'type' => $type,
 		]);
 	}
+
+    /**
+     * When no value is set, and no options have been loaded, when the input is focused we'll trigger a load immediately.
+     *
+     * @param bool $value
+     * @return $this
+     */
+    public function preload(bool $value = true): self {
+        return $this->withMeta([
+            'preload' => $value,
+        ]);
+    }
 }

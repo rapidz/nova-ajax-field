@@ -17,6 +17,7 @@
         :filterable="filterable"
         @search="inputChange"
         @input="inputSelected"
+        @search:focus="inputFocus"
       />
     </template>
   </default-field>
@@ -30,7 +31,7 @@ import _ from 'lodash';
 import { isArray } from 'util';
 
 export default {
-	
+
 	components: {
 		VueSelect,
 	},
@@ -61,7 +62,7 @@ export default {
 
 			// If component is inside a flexible, key is prefixed with an id
 			if( currentField.indexOf('__') ) {
-				targetField = currentField.substr(0, currentField.indexOf('__')) + '__' + targetField; 
+				targetField = currentField.substr(0, currentField.indexOf('__')) + '__' + targetField;
 			}
 
 			//  Find the component the parent value references
@@ -122,7 +123,7 @@ export default {
 
 		/*
 		* Load initial Options
-		*/ 
+		*/
 		loadInitialOptions (value) {
 			let url = this.buildParamString(null, value);
 
@@ -152,7 +153,7 @@ export default {
 
 		/*
 		* Dynamic search with the input value
-		*/ 
+		*/
 		search: window._.debounce((loading, searchVal, vm) => {
 			let url = vm.buildParamString(searchVal)
 			window.Nova.request().get( url ).then(({data}) => {
@@ -161,7 +162,7 @@ export default {
 			});
 		}, 350),
 
-		
+
 		/*
 		* When multiselect input changes, determine if ready to query
 		*/
@@ -244,7 +245,13 @@ export default {
 				const selectedOption = this.options.find(option => option.value === value);
 				this.selectedOptions.push(selectedOption);
 			}
-		}
+		},
+
+        inputFocus () {
+            if (this.field.preload && this.availableOptions.length === 0 && this.selectedOptions.length === 0) {
+                this.search((val) => { /* ignore */ }, "", this);
+            }
+        }
 	},
 }
 </script>
